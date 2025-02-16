@@ -135,14 +135,16 @@ class AcceptableToggle extends FieldComponent {
     const container = this.root.element;
     if (!container) return;
 
-    // Find all radio components inside the same container
+    // Find all radio components inside the form
     const radioComponents = this.root.components.filter(comp => comp.type === 'radio');
 
     radioComponents.forEach(radio => {
-      const acceptableOption = radio.component.values.find(option => option.value.toLowerCase() === 'acceptable');
-      
+      const acceptableOption = radio.component.values.find(option => 
+        option.label.toLowerCase() === 'acceptable' || option.value.toLowerCase() === 'acceptable'
+      );
+
       if (acceptableOption) {
-        radio.setValue(isChecked ? acceptableOption.value : ''); // Select "Acceptable" or clear selection
+        radio.setValue(isChecked ? acceptableOption.value : ''); // Select "Acceptable" or reset
         console.log(`Setting "${radio.component.label}" to "Acceptable"`);
       }
     });
