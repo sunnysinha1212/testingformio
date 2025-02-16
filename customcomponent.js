@@ -1,8 +1,11 @@
 // Ensure Formio is available globally
-console.log("Registering Custom Dropdown Component...");
+console.log("Registering Custom Components...");
 console.log("Available Components: ", window.Formio.Components.components);
 
-// Get the Select component from Form.io's global object
+// ----------------------------------------
+// ✅ Custom Dropdown Component
+// ----------------------------------------
+
 const SelectComponent = window.Formio.Components.components.select;
 
 class CustomDropdown extends SelectComponent {
@@ -24,7 +27,7 @@ class CustomDropdown extends SelectComponent {
   static get builderInfo() {
     return {
       title: 'Dynamic API Select',
-      group: 'basic', // Adjust if you want it in a different section
+      group: 'basic',
       icon: 'list',
       weight: 70,
       documentation: 'https://help.form.io/developers/form-development/custom-components',
@@ -81,6 +84,76 @@ class CustomDropdown extends SelectComponent {
   }
 }
 
-// Register the component globally without import
+// ----------------------------------------
+// ✅ Acceptable Toggle Component
+// ----------------------------------------
+
+const FieldComponent = window.Formio.Components.components.field;
+
+class AcceptableToggle extends FieldComponent {
+  static schema(...extend) {
+    return FieldComponent.schema({
+      type: 'acceptableToggle',
+      label: 'Acceptable Toggle',
+      key: 'acceptableToggle',
+      inputType: 'checkbox',
+      input: true
+    });
+  }
+
+  static get builderInfo() {
+    return {
+      title: 'Acceptable Toggle',
+      group: 'basic',
+      icon: 'toggle-on',
+      weight: 80,
+      documentation: 'https://help.form.io/developers/form-development/custom-components',
+      schema: AcceptableToggle.schema()
+    };
+  }
+
+  constructor(component, options, data) {
+    super(component, options, data);
+  }
+
+  async attach(element) {
+    await super.attach(element);
+    
+    // Find the checkbox input
+    const input = element.querySelector('input[type="checkbox"]');
+    if (!input) return;
+
+    // Add event listener for toggle change
+    input.addEventListener('change', (event) => this.handleToggle(event));
+  }
+
+  handleToggle(event) {
+    const isChecked = event.target.checked;
+    console.log(`Toggle is now: ${isChecked ? 'ON' : 'OFF'}`);
+
+    // Get the container element
+    const container = this.root.element;
+    if (!container) return;
+
+    // Find all radio components inside the same container
+    const radioComponents = this.root.components.filter(comp => comp.type === 'radio');
+
+    radioComponents.forEach(radio => {
+      const acceptableOption = radio.component.values.find(option => option.value.toLowerCase() === 'acceptable');
+      
+      if (acceptableOption) {
+        radio.setValue(isChecked ? acceptableOption.value : ''); // Select "Acceptable" or clear selection
+        console.log(`Setting "${radio.component.label}" to "Acceptable"`);
+      }
+    });
+  }
+}
+
+// ----------------------------------------
+// ✅ Register Components in Form.io
+// ----------------------------------------
+
 window.Formio.Components.addComponent('customDropdown', CustomDropdown);
-console.log("Custom Dropdown Component Registered Successfully!");
+window.Formio.Components.addComponent('acceptableToggle', AcceptableToggle);
+
+console.log("Custom Components Registered Successfully!");
