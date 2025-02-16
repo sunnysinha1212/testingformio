@@ -1,6 +1,9 @@
-import { Components } from 'formiojs';
-const SelectComponent = Components.components.select;
-console.log(Formio.Components.components);
+// Ensure Formio is available globally
+console.log("Registering Custom Dropdown Component...");
+console.log("Available Components: ", window.Formio.Components.components);
+
+// Get the Select component from Form.io's global object
+const SelectComponent = window.Formio.Components.components.select;
 
 class CustomDropdown extends SelectComponent {
   static schema(...extend) {
@@ -21,7 +24,7 @@ class CustomDropdown extends SelectComponent {
   static get builderInfo() {
     return {
       title: 'Dynamic API Select',
-      group: 'basic',  // Adjust if you want it in a different section
+      group: 'basic', // Adjust if you want it in a different section
       icon: 'list',
       weight: 70,
       documentation: 'https://help.form.io/developers/form-development/custom-components',
@@ -78,5 +81,6 @@ class CustomDropdown extends SelectComponent {
   }
 }
 
-// Register the component globally
-Components.addComponent('customDropdown', CustomDropdown);
+// Register the component globally without import
+window.Formio.Components.addComponent('customDropdown', CustomDropdown);
+console.log("Custom Dropdown Component Registered Successfully!");
