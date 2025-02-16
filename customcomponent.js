@@ -118,12 +118,25 @@ class AcceptableToggle extends FieldComponent {
 
   async attach(element) {
     await super.attach(element);
-    
-    // Find the checkbox input
-    const input = element.querySelector('input[type="checkbox"]');
-    if (!input) return;
 
-    // Add event listener for toggle change
+    // ✅ Create a checkbox input dynamically
+    const container = document.createElement('div');
+    container.classList.add('custom-toggle-container');
+
+    const input = document.createElement('input');
+    input.type = 'checkbox';
+    input.classList.add('custom-toggle-input');
+    input.checked = this.dataValue || false;
+
+    const label = document.createElement('label');
+    label.classList.add('custom-toggle-label');
+    label.innerText = " Acceptable Toggle";
+
+    container.appendChild(input);
+    container.appendChild(label);
+    element.appendChild(container);
+
+    // ✅ Add event listener for toggle change
     input.addEventListener('change', (event) => this.handleToggle(event));
   }
 
