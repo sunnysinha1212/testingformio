@@ -1,3 +1,5 @@
+console.log("Registering Custom Dropdown Component...");
+
 Formio.Components.addComponent('customDropdown', {
   schema: {
     type: 'customDropdown',
@@ -22,6 +24,7 @@ Formio.Components.addComponent('customDropdown', {
   },
 
   attach: function(element) {
+    console.log("Custom Dropdown Component Attached");
     this.loadOptions();
   },
 
@@ -49,6 +52,8 @@ Formio.Components.addComponent('customDropdown', {
       });
 
       const data = await response.json();
+      console.log("API Response: ", data);
+
       if (data && data.options) {
         this.component.data.values = data.options.map(item => ({
           label: item.name,
@@ -61,3 +66,5 @@ Formio.Components.addComponent('customDropdown', {
     }
   }
 });
+
+console.log("Custom Dropdown Component Registered Successfully!");
