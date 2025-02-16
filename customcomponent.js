@@ -126,7 +126,7 @@ class AcceptableToggle extends window.FieldComponent {
 async attach(element) {
     await super.attach(element);
 
-    // ✅ Create a styled toggle switch instead of a basic checkbox
+    // ✅ Create a flex container for inline display
     const container = document.createElement('div');
     container.classList.add('toggle-container');
 
@@ -141,9 +141,15 @@ async attach(element) {
     const slider = document.createElement('span');
     slider.classList.add('slider');
 
+    // ✅ Create a separate label for "Acceptable"
+    const textLabel = document.createElement('span');
+    textLabel.classList.add('toggle-label');
+    textLabel.innerText = "Acceptable"; // ✅ Only display "Acceptable"
+
     label.appendChild(input);
     label.appendChild(slider);
     container.appendChild(label);
+    container.appendChild(textLabel); // ✅ Add label text next to toggle
     element.appendChild(container);
 
     // ✅ Add event listener for toggle change
