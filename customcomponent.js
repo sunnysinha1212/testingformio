@@ -151,11 +151,7 @@ class AcceptableToggle extends window.FieldComponent {
     const isChecked = event.target.checked;
     console.log(`Toggle is now: ${isChecked ? 'ON' : 'OFF'}`);
 
-    // Get the container element
-    const container = this.root.element;
-    if (!container) return;
-
-    // Find all radio components inside the form
+    // ✅ Get all radio components in the form
     const radioComponents = this.root.components.filter(comp => comp.type === 'radio');
 
     radioComponents.forEach(radio => {
@@ -164,8 +160,13 @@ class AcceptableToggle extends window.FieldComponent {
       );
 
       if (acceptableOption) {
-        radio.setValue(isChecked ? acceptableOption.value : ''); // Select "Acceptable" or reset
         console.log(`Setting "${radio.component.label}" to "Acceptable"`);
+
+        // ✅ Use Form.io API to update the value properly
+        this.root.setValue({ [radio.component.key]: isChecked ? acceptableOption.value : '' });
+
+        // ✅ Manually trigger UI update
+        radio.redraw();
       }
     });
   }
