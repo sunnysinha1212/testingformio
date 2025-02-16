@@ -2,7 +2,7 @@
 console.log("Registering Custom Components...");
 console.log("Available Components: ", window.Formio.Components.components);
 
-// ----------------------------------------
+// -----------------------------------------
 // ✅ Custom Dropdown Component
 // ----------------------------------------
 
