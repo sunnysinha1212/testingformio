@@ -3,18 +3,23 @@ console.log("Registering Custom Components...");
 console.log("Available Components: ", window.Formio.Components.components);
 
 // ----------------------------------------
-// ✅ Get Form.io Component References (Declared Once)
+// ✅ Get Form.io Component References (Declared Only If Not Already Defined)
 // ----------------------------------------
-const SelectComponent = window.Formio.Components.components.select;
-const FieldComponent = window.Formio.Components.components.field;
+if (typeof window.SelectComponent === "undefined") {
+  window.SelectComponent = window.Formio.Components.components.select;
+}
+
+if (typeof window.FieldComponent === "undefined") {
+  window.FieldComponent = window.Formio.Components.components.field;
+}
 
 // ----------------------------------------
 // ✅ Custom Dropdown Component
 // ----------------------------------------
 
-class CustomDropdown extends SelectComponent {
+class CustomDropdown extends window.SelectComponent {
   static schema(...extend) {
-    return SelectComponent.schema({
+    return window.SelectComponent.schema({
       type: 'customDropdown',
       label: 'Dynamic API Select',
       key: 'customDropdown',
@@ -92,9 +97,9 @@ class CustomDropdown extends SelectComponent {
 // ✅ Acceptable Toggle Component
 // ----------------------------------------
 
-class AcceptableToggle extends FieldComponent {
+class AcceptableToggle extends window.FieldComponent {
   static schema(...extend) {
-    return FieldComponent.schema({
+    return window.FieldComponent.schema({
       type: 'acceptableToggle',
       label: 'Acceptable Toggle',
       key: 'acceptableToggle',
@@ -170,7 +175,12 @@ class AcceptableToggle extends FieldComponent {
 // ✅ Register Components in Form.io (Avoid Duplicate Declarations)
 // ----------------------------------------
 
-window.Formio.Components.addComponent('customDropdown', CustomDropdown);
-window.Formio.Components.addComponent('acceptableToggle', AcceptableToggle);
+if (!window.Formio.Components.components.customDropdown) {
+  window.Formio.Components.addComponent('customDropdown', CustomDropdown);
+}
+
+if (!window.Formio.Components.components.acceptableToggle) {
+  window.Formio.Components.addComponent('acceptableToggle', AcceptableToggle);
+}
 
 console.log("Custom Components Registered Successfully!");
