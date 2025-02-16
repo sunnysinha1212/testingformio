@@ -2,11 +2,15 @@
 console.log("Registering Custom Components...");
 console.log("Available Components: ", window.Formio.Components.components);
 
-// -----------------------------------------
+// ----------------------------------------
+// ✅ Get Form.io Component References (Declared Once)
+// ----------------------------------------
+const SelectComponent = window.Formio.Components.components.select;
+const FieldComponent = window.Formio.Components.components.field;
+
+// ----------------------------------------
 // ✅ Custom Dropdown Component
 // ----------------------------------------
-
-const SelectComponent = window.Formio.Components.components.select;
 
 class CustomDropdown extends SelectComponent {
   static schema(...extend) {
@@ -88,8 +92,6 @@ class CustomDropdown extends SelectComponent {
 // ✅ Acceptable Toggle Component
 // ----------------------------------------
 
-const FieldComponent = window.Formio.Components.components.field;
-
 class AcceptableToggle extends FieldComponent {
   static schema(...extend) {
     return FieldComponent.schema({
@@ -165,7 +167,7 @@ class AcceptableToggle extends FieldComponent {
 }
 
 // ----------------------------------------
-// ✅ Register Components in Form.io
+// ✅ Register Components in Form.io (Avoid Duplicate Declarations)
 // ----------------------------------------
 
 window.Formio.Components.addComponent('customDropdown', CustomDropdown);
