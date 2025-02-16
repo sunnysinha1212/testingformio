@@ -123,29 +123,32 @@ class AcceptableToggle extends window.FieldComponent {
     super(component, options, data);
   }
 
-  async attach(element) {
+async attach(element) {
     await super.attach(element);
 
-    // ✅ Create a checkbox input dynamically
+    // ✅ Create a styled toggle switch instead of a basic checkbox
     const container = document.createElement('div');
-    container.classList.add('custom-toggle-container');
+    container.classList.add('toggle-container');
+
+    const label = document.createElement('label');
+    label.classList.add('toggle-switch');
 
     const input = document.createElement('input');
     input.type = 'checkbox';
-    input.classList.add('custom-toggle-input');
+    input.classList.add('toggle-input');
     input.checked = this.dataValue || false;
 
-    const label = document.createElement('label');
-    label.classList.add('custom-toggle-label');
-    label.innerText = " Acceptable Toggle";
+    const slider = document.createElement('span');
+    slider.classList.add('slider');
 
-    container.appendChild(input);
+    label.appendChild(input);
+    label.appendChild(slider);
     container.appendChild(label);
     element.appendChild(container);
 
     // ✅ Add event listener for toggle change
     input.addEventListener('change', (event) => this.handleToggle(event));
-  }
+}
 
   handleToggle(event) {
     const isChecked = event.target.checked;
