@@ -1,10 +1,11 @@
-/* ✅ Toggle Button Styles */
+/* ✅ Ensure Toggle and Label are in One Line */
 .toggle-container {
     display: flex;
-    align-items: center;
-    margin-top: 10px;
+    align-items: center;  /* ✅ Keep elements aligned */
+    gap: 10px; /* ✅ Add spacing between toggle and label */
 }
 
+/* ✅ Improve Toggle Switch Styling */
 .toggle-switch {
     position: relative;
     width: 50px;
@@ -47,4 +48,11 @@
 
 .toggle-input:checked + .slider:before {
     transform: translateX(24px);
+}
+
+/* ✅ Ensure Label Looks Proper */
+.toggle-label {
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
 }
