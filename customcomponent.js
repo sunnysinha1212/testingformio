@@ -151,25 +151,41 @@ class AcceptableToggle extends window.FieldComponent {
     const isChecked = event.target.checked;
     console.log(`Toggle is now: ${isChecked ? 'ON' : 'OFF'}`);
 
-    // ✅ Get all radio components in the form
-    const radioComponents = this.root.components.filter(comp => comp.type === 'radio');
+    // ✅ Recursively find all radio components inside the form
+    function findRadioComponents(component) {
+        let radios = [];
+        if (component.type === 'radio') {
+            radios.push(component);
+        }
+        if (component.components && component.components.length) {
+            component.components.forEach(child => {
+                radios = radios.concat(findRadioComponents(child));
+            });
+        }
+        return radios;
+    }
 
+    // ✅ Get all radio components in the form, including those inside containers
+    const radioComponents = findRadioComponents(this.root);
+    console.log("Found Radio Components:", radioComponents);
+
+    // ✅ Update radio buttons based on the toggle
     radioComponents.forEach(radio => {
-      const acceptableOption = radio.component.values.find(option => 
-        option.label.toLowerCase() === 'acceptable' || option.value.toLowerCase() === 'acceptable'
-      );
+        const acceptableOption = radio.component.values.find(option =>
+            option.label.toLowerCase() === 'acceptable' || option.value.toLowerCase() === 'acceptable'
+        );
 
-      if (acceptableOption) {
-        console.log(`Setting "${radio.component.label}" to "Acceptable"`);
+        if (acceptableOption) {
+            console.log(`Setting "${radio.component.label}" to "Acceptable"`);
+            
+            // ✅ Properly update the value using Form.io API
+            radio.setValue(isChecked ? acceptableOption.value : '');
 
-        // ✅ Use Form.io API to update the value properly
-        this.root.setValue({ [radio.component.key]: isChecked ? acceptableOption.value : '' });
-
-        // ✅ Manually trigger UI update
-        radio.redraw();
-      }
+            // ✅ Ensure UI updates
+            radio.redraw();
+        }
     });
-  }
+}
 }
 
 // ----------------------------------------
