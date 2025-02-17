@@ -1,7 +1,7 @@
 /* ✅ Ensure Toggle and Label are in One Line */
 .toggle-container {
     display: flex;
-    align-items: center;  /* ✅ Keep elements aligned */
+    align-items: center;
     gap: 10px; /* ✅ Add spacing between toggle and label */
 }
 
